@@ -1,0 +1,37 @@
+digraph struct {
+label="struct"
+rankdir="LR"
+remincross=true
+splines=ortho
+{rank = same; "a";"c";"b";}
+{rank = same; "x";}
+"$1" [shape=box, label="$1
+NOR"]
+"x" [shape=octagon, label="x
+PRIMARY_OUTPUT"]
+"$2" [shape=box, label="$2
+NOT"]
+"$3" [shape=box, label="$3
+NOT"]
+"a" [shape=octagon, label="a
+PRIMARY_INPUT"]
+"$4" [shape=box, label="$4
+NOR"]
+"$5" [shape=box, label="$5
+NOT"]
+"$6" [shape=box, label="$6
+NOT"]
+"c" [shape=octagon, label="c
+PRIMARY_INPUT"]
+"b" [shape=octagon, label="b
+PRIMARY_INPUT"]
+"$1" -> "x"
+"$2" -> "$1"
+"$3" -> "$1"
+"a" -> "$3"
+"$4" -> "$2"
+"$5" -> "$4"
+"$6" -> "$4"
+"c" -> "$6"
+"b" -> "$5"
+}

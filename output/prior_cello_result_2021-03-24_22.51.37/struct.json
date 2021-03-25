@@ -1,0 +1,191 @@
+{
+  "creator": "Yosys 0.9 (git sha1 1979e0b)",
+  "modules": {
+    "struct": {
+      "attributes": {
+        "top": 1,
+        "src": "/root/input/struct.v:1"
+      },
+      "ports": {
+        "x": {
+          "direction": "output",
+          "bits": [ 2 ]
+        },
+        "a": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "b": {
+          "direction": "input",
+          "bits": [ 4 ]
+        },
+        "c": {
+          "direction": "input",
+          "bits": [ 5 ]
+        }
+      },
+      "cells": {
+        "$abc$61$auto$blifparse.cc:371:parse_blif$62": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5 ],
+            "Y": [ 6 ]
+          }
+        },
+        "$abc$61$auto$blifparse.cc:371:parse_blif$63": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 4 ],
+            "Y": [ 7 ]
+          }
+        },
+        "$abc$61$auto$blifparse.cc:371:parse_blif$64": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 3 ],
+            "Y": [ 8 ]
+          }
+        },
+        "$abc$61$auto$blifparse.cc:371:parse_blif$65": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 7 ],
+            "Y": [ 9 ]
+          }
+        },
+        "$abc$61$auto$blifparse.cc:371:parse_blif$66": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 9 ],
+            "Y": [ 10 ]
+          }
+        },
+        "$abc$61$auto$blifparse.cc:371:parse_blif$67": {
+          "hide_name": 1,
+          "type": "$_NOR_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "B": [ 10 ],
+            "Y": [ 2 ]
+          }
+        }
+      },
+      "netnames": {
+        "$abc$61$n5": {
+          "hide_name": 1,
+          "bits": [ 6 ],
+          "attributes": {
+          }
+        },
+        "$abc$61$n6": {
+          "hide_name": 1,
+          "bits": [ 7 ],
+          "attributes": {
+          }
+        },
+        "$abc$61$n7": {
+          "hide_name": 1,
+          "bits": [ 8 ],
+          "attributes": {
+          }
+        },
+        "$abc$61$n8": {
+          "hide_name": 1,
+          "bits": [ 9 ],
+          "attributes": {
+          }
+        },
+        "$abc$61$n9": {
+          "hide_name": 1,
+          "bits": [ 10 ],
+          "attributes": {
+          }
+        },
+        "a": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "/root/input/struct.v:1"
+          }
+        },
+        "b": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "/root/input/struct.v:1"
+          }
+        },
+        "c": {
+          "hide_name": 0,
+          "bits": [ 5 ],
+          "attributes": {
+            "src": "/root/input/struct.v:1"
+          }
+        },
+        "x": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "/root/input/struct.v:1"
+          }
+        }
+      }
+    }
+  }
+}

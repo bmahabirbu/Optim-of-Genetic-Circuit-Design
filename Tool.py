@@ -1,3 +1,4 @@
+#Written by Brian Mahabir and Landon Kushimi
 import math
 import sys
 from os import listdir

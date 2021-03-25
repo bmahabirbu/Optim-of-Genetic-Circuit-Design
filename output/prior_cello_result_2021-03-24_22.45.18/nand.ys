@@ -1,0 +1,14 @@
+read_verilog /root/input/nand.v
+flatten
+splitnets -ports
+hierarchy -auto-top
+proc
+techmap
+opt
+abc -g NOR
+opt
+hierarchy -auto-top
+opt_clean -purge
+show -format pdf -prefix /root/output/nand_yosys
+write_edif /root/output/nand.edif
+write_json /root/output/nand.json
