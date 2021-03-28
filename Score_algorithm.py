@@ -5,7 +5,7 @@ class JSON_EDITOR:
 
     def __init__(self):
         #set json path
-        self.json_path = '/home/brian/ec-552-hw1/input/Eco1C1G1T1.input (copy)json'
+        self.json_path = '/home/brian/ec-552-hw1/input/Eco1C1G1T1.input (copy).json'
         self.max_json_index = 17
 
     def load_json(self):

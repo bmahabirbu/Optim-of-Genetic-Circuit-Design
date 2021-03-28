@@ -83,9 +83,12 @@ best_score_op = 0
 best_input_signal_1= best_input_signals[0]
 best_input_signal_2= best_input_signals[1]
 
+print(best_input_signal_1)
+print(best_input_signal_2)
+
 json_master=SA.JSON_EDITOR()
 
-for i in range(0):
+for i in range(5):
     #Algorithmn
     json_master.stretch(best_input_signal_1, 1.5)
     json_master.stretch(best_input_signal_2, 1.5)
@@ -116,6 +119,6 @@ for i in range(0):
     q.reset_input_signals()
     
 print('-----')
-print(f'Best Score optimized: {best_score}')
+print(f'Best Score optimized: {best_score_op}')
 delta = best_score_op-old_score
-print('Delta Increase'+str(delta))
+print('Delta '+str(delta))
