@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "homework1-template"
+version = "0.1.0"
+description = ""
+authors = ["W.R. Jackson <jackson@justjackson.dev>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+celloapi2 = "^0.2.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

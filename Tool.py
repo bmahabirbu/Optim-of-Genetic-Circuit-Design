@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join
 from itertools import combinations
 from celloapi2 import CelloQuery, CelloResult
-
+import Score_algorithm as SA 
 # Set our directory variables. If you have a Windows based
 # operating system you need to input window based paths.
 in_dir = '/home/brian/ec-552-hw1/input'
@@ -18,6 +18,8 @@ while True:
     v_file_input = input("enter verilog file with .v you want to optimize\n")
     if v_file_input in onlyfiles:
         v_file = v_file_input
+        signal_input_number = input("enter the number of inputs for the verilog file ")
+        signal_input = int(signal_input_number)
         break
     elif v_file_input == 'q':
         print("you have quit")
@@ -27,7 +29,7 @@ while True:
 
 options = 'options.csv'
 # Calculate number of inputs into the Circuit.
-signal_input = 2
+#signal_input = 2
 
 # We want to try every e-coli chassis.
 chassis_name = ['Eco1C1G1T1']
@@ -37,6 +39,8 @@ chassis_name = ['Eco1C1G1T1']
 best_score = 0
 best_chassis = None
 best_input_signals = None
+
+# find best score without optimize for finding what input_signasl are best for
 for chassis in chassis_name:
     in_ucf = f'{chassis}.UCF.json'
     input_sensor_file = f'{chassis}.input.json'
@@ -57,8 +61,10 @@ for chassis in chassis_name:
         q.set_input_signals(signal_set)
         q.get_results()
         try:
+            #this code gets the data from the output
             res = CelloResult(results_dir=out_dir)
             if res.circuit_score > best_score:
+                #Algorithmn
                 best_score = res.circuit_score
                 best_chassis = chassis
                 best_input_signals = signal_set
@@ -66,6 +72,50 @@ for chassis in chassis_name:
             pass
         q.reset_input_signals()
     print('-----')
-print(f'Best Score: {best_score}')
-print(f'Best Chassis: {best_chassis}')
-print(f'Best Input Signals: {best_input_signals}')
+print(f'Best Score unoptimized: {best_score}')
+print(f'Best Chassis unoptimzed: {best_chassis}')
+print(f'Best Input Signals unoptimized: {best_input_signals}')
+
+# Second round optimize
+
+old_score = best_score
+best_score_op = 0
+best_input_signal_1= best_input_signals[0]
+best_input_signal_2= best_input_signals[1]
+
+json_master=SA.JSON_EDITOR()
+
+for i in range(0):
+    #Algorithmn
+    json_master.stretch(best_input_signal_1, 1.5)
+    json_master.stretch(best_input_signal_2, 1.5)
+    #test
+    in_ucf = f'{chassis}.UCF.json'
+    input_sensor_file = f'{chassis}.input (copy).json'
+    output_device_file = f'{chassis}.output.json'
+    q = CelloQuery(
+        input_directory=in_dir,
+        output_directory=out_dir,
+        verilog_file=v_file,
+        compiler_options=options,
+        input_ucf=in_ucf,
+        input_sensors=input_sensor_file,
+        output_device=output_device_file,
+    )
+    q.set_input_signals(best_input_signals)
+    q.get_results()
+    try:
+        #this code gets the data from the output
+        res = CelloResult(results_dir=out_dir)
+        if res.circuit_score > best_score_op:
+            best_score_op = res.circuit_score
+            #best_chassis = chassis
+            #best_input_signals = signal_set
+    except:
+        pass
+    q.reset_input_signals()
+    
+print('-----')
+print(f'Best Score optimized: {best_score}')
+delta = best_score_op-old_score
+print('Delta Increase'+str(delta))
