@@ -183,6 +183,21 @@
 		]
 	},
 	{
+		"collection": "functions",
+		"name": "sensor_tandem_interference_factor",
+		"equation": "alpha * beta^(1 - $STATE)",
+		"parameters": [
+			{
+				"name": "alpha",
+				"map": "#//model/parameters/alpha"
+			},
+			{
+				"name": "beta",
+				"map": "#//model/parameters/beta"
+			}
+		]
+	},
+	{
 		"collection": "parts",
 		"type": "promoter",
 		"name": "pTac",

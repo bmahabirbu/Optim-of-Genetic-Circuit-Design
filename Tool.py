@@ -43,7 +43,7 @@ best_input_signals = None
 # find best score without optimize for finding what input_signasl are best for
 for chassis in chassis_name:
     in_ucf = f'{chassis}.UCF.json'
-    input_sensor_file = f'{chassis}.input.json'
+    input_sensor_file = f'{chassis}.input (copy).json'
     output_device_file = f'{chassis}.output.json'
     q = CelloQuery(
         input_directory=in_dir,
@@ -80,31 +80,33 @@ print(f'Best Input Signals unoptimized: {best_input_signals}')
 
 old_score = best_score
 best_score_op = 0
+
 best_input_signal_1= best_input_signals[0]
 best_input_signal_2= best_input_signals[1]
 
 print(best_input_signal_1)
 print(best_input_signal_2)
-
+#instantiate class
 json_master=SA.JSON_EDITOR()
+    
 
+#Algorithmn
+for i in range(signal_input):
+    json_master.Algorithm(best_input_signals[i])
+#test
+in_ucf = f'{chassis}.UCF.json'
+input_sensor_file = f'{chassis}.input (copy).json'
+output_device_file = f'{chassis}.output.json'
+q = CelloQuery(
+    input_directory=in_dir,
+    output_directory=out_dir,
+    verilog_file=v_file,
+    compiler_options=options,
+    input_ucf=in_ucf,
+    input_sensors=input_sensor_file,
+    output_device=output_device_file,
+)
 for i in range(5):
-    #Algorithmn
-    json_master.stretch(best_input_signal_1, 1.5)
-    json_master.stretch(best_input_signal_2, 1.5)
-    #test
-    in_ucf = f'{chassis}.UCF.json'
-    input_sensor_file = f'{chassis}.input (copy).json'
-    output_device_file = f'{chassis}.output.json'
-    q = CelloQuery(
-        input_directory=in_dir,
-        output_directory=out_dir,
-        verilog_file=v_file,
-        compiler_options=options,
-        input_ucf=in_ucf,
-        input_sensors=input_sensor_file,
-        output_device=output_device_file,
-    )
     q.set_input_signals(best_input_signals)
     q.get_results()
     try:
@@ -117,7 +119,7 @@ for i in range(5):
     except:
         pass
     q.reset_input_signals()
-    
+
 print('-----')
 print(f'Best Score optimized: {best_score_op}')
 delta = best_score_op-old_score

@@ -1,5 +1,7 @@
 import json
 import math
+# simulated annealing global optimization for a multimodal objective function
+from scipy.optimize import dual_annealing
 
 class JSON_EDITOR:
 
@@ -22,29 +24,11 @@ class JSON_EDITOR:
         f.close()
         
     def get_index_from_input_signal(self, data, input_signal):
-        if input_signal == 'LacI':
-            name = 'LacI_sensor_model'
-            for i in range(self.max_json_index):
-                if name in data[i]['name']:
-                    return i
-        elif input_signal == 'TetR':
-            name = 'TetR_sensor_model'
-            for i in range(self.max_json_index):
-                if name in data[i]['name']:
-                    return i
-        elif input_signal == 'AraC':
-            name = 'AraC_sensor_model'
-            for i in range(self.max_json_index):
-                if name in data[i]['name']:
-                    return i
-        elif input_signal =='LuxR':
-            name = 'LuxR_sensor_model'
-            for i in range(self.max_json_index):
-                if name in data[i]['name']:
-                    return i
-        else:
-            print("The signal inputs do not match Ecol1.input.json")
-            return None
+        add_string = '_sensor_model'
+        name = "".join((input_signal, add_string))
+        for i in range(self.max_json_index):
+            if name in data[i]['name']:
+                return i
         
     def stretch(self, input_signal, x):
         #load json and get index value for given input signal
@@ -153,6 +137,91 @@ class JSON_EDITOR:
                 
         self.write_json(data)
         
-    #def Algorithm(self, input_signal, x, score, prev_score)
+    def Algorithm(self, input_signal):
+        #Load Json file
+        data = self.load_json()
+        #get index value assosiated with input signal given
+        index = self.get_index_from_input_signal(data, input_signal)
+        #extract input signal parameters
+        for param in data[index]['parameters']:
+            #search for k and change value
+            if param["name"] == 'ymax':
+                ymax_og = param["value"]
+                print("ymax_og "+str(ymax_og))
+            if param["name"] == 'ymin':
+                ymin_og = param["value"]
+                print("ymin_og "+str(ymin_og))
+            if param["name"] == 'alpha':
+                n_og = param["value"]
+                print("n_og "+str(n_og))
+            if param["name"] == 'beta':
+                k_og = param["value"]
+                print("k_og "+str(k_og))
     
+        # create negative response function to find global maxima and optmize for global maxima
+        def objective(v):
+            x,ymax,ymin,n,k = v
+            return -(ymin_og*ymin+((ymax_og*ymax-ymin_og*ymin)/(1+((x/k_og*k) ** (n_og*n)))))
+         
+        # define range for parameters
+        r_min, r_max = 0.01 , 20.0
+        # define the bounds on the search
+        bounds = [[r_min, r_max],[r_min, r_max],[r_min, r_max],[r_min, r_max],[r_min, r_max]]
+        # perform the simulated annealing search
+        result = dual_annealing(objective, bounds)
+        # evaluate solution
+        solution = result['x'] 
+        evaluation = objective(solution)
         
+        #retreive new parameters from optimized response function
+
+        ymax_op = solution[1]*ymax_og
+        print("ymax_op "+str(ymax_op))
+        ymin_op = solution[2]*ymin_og
+        print("ymin_op "+str(ymin_op))
+        n_op = solution[3]*n_og
+        print("n_op "+str(n_op))
+        k_op = solution[4]*k_og
+        print("k_op "+str(k_op))
+        
+        
+        #Now we will use the operations given
+        #to get as close as possible to the ideal response function calculated
+        if n_og > n_op:
+            x = n_og/(n_op*1.05)
+            for i in range(int(x)):
+                self.decrease_slope(input_signal, x)
+                
+        if n_og < n_op:
+            x = n_op/(n_og*1.05)
+            for i in range(int(x)):
+                self.increase_slope(input_signal, x)
+        
+        if k_og > k_op:
+            x = k_og/k_op
+            self.Weaker_RBS(input_signal, x)
+                
+        if k_og < k_op:
+            x = k_op/k_og
+            self.Stronger_RBS(input_signal, x)
+
+        
+        while ymax_og < ymax_op*1.5 or ymin_og > ymax_op/1.5:
+            self.stretch(input_signal, x)
+            ymax_og = ymax_og*1.5
+            ymin_og = ymin_og/1.5
+        '''
+        
+        for param in data[index]['parameters']:
+            #search for k and change value
+            if param["name"] == 'ymax':
+                param["value"] = ymax_op
+            if param["name"] == 'ymin':
+                param["value"] = ymin_op
+            if param["name"] == 'alpha':
+                param["value"] = n_op
+            if param["name"] == 'beta':
+                param["value"] = k_op
+        
+        self.write_json(data)
+        '''
