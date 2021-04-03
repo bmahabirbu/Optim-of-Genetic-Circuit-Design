@@ -1,4 +1,4 @@
-#Written by Brian Mahabir and Landon Kushimi
+#Written by Brian Mahabir and Landon Kushimi using the Cello template code
 import math
 import sys
 from os import listdir
@@ -28,14 +28,10 @@ while True:
         print(v_file_input + " not a valid input try again if you want to quit press q")
 
 options = 'options.csv'
-# Calculate number of inputs into the Circuit.
-#signal_input = 2
 
-# We want to try every e-coli chassis.
+#Change this to check a different ucf file
 chassis_name = ['Eco1C1G1T1']
-#Eco1C2G2T2', 'Eco2C1G3T1']
 
-#Have muliple tests for each input file edit
 best_score = 0
 best_chassis = None
 best_input_signals = None
@@ -77,23 +73,19 @@ print(f'Best Chassis unoptimzed: {best_chassis}')
 print(f'Best Input Signals unoptimized: {best_input_signals}')
 
 # Second round optimize
-
+#Set variables to be used
 old_score = best_score
 best_score_op = 0
-
-best_input_signal_1= best_input_signals[0]
-best_input_signal_2= best_input_signals[1]
-
-print(best_input_signal_1)
-print(best_input_signal_2)
-#instantiate class
+#instantiate class that will edit json file and do the algo
 json_master=SA.JSON_EDITOR()
     
 
 #Algorithmn
+#loop for as many inputs given
 for i in range(signal_input):
     json_master.Algorithm(best_input_signals[i])
-#test
+#get results after the algo has edited the json file we want to check this more than once
+#and get the best score since cello has random scores
 in_ucf = f'{chassis}.UCF.json'
 input_sensor_file = f'{chassis}.input (copy).json'
 output_device_file = f'{chassis}.output.json'
@@ -106,7 +98,7 @@ q = CelloQuery(
     input_sensors=input_sensor_file,
     output_device=output_device_file,
 )
-for i in range(5):
+for i in range(20):
     q.set_input_signals(best_input_signals)
     q.get_results()
     try:

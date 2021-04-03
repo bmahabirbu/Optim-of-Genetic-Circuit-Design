@@ -176,52 +176,32 @@ class JSON_EDITOR:
         #retreive new parameters from optimized response function
 
         ymax_op = solution[1]*ymax_og
-        print("ymax_op "+str(ymax_op))
         ymin_op = solution[2]*ymin_og
-        print("ymin_op "+str(ymin_op))
         n_op = solution[3]*n_og
-        print("n_op "+str(n_op))
         k_op = solution[4]*k_og
-        print("k_op "+str(k_op))
+
         
         
         #Now we will use the operations given
         #to get as close as possible to the ideal response function calculated
-        if n_og > n_op:
-            x = n_og/(n_op*1.05)
-            for i in range(int(x)):
-                self.decrease_slope(input_signal, x)
+        while n_og/1.05 > n_op:
+            self.decrease_slope(input_signal, 1.05)
+            n_og = n_og/1.05
                 
-        if n_og < n_op:
-            x = n_op/(n_og*1.05)
-            for i in range(int(x)):
-                self.increase_slope(input_signal, x)
+        while n_og*1.05 < n_op:
+            self.increase_slope(input_signal, 1.05)
+            n_og = n_og*1.05
         
         if k_og > k_op:
             x = k_og/k_op
-            self.Weaker_RBS(input_signal, x)
+            self.Stronger_RBS(input_signal, x)
                 
         if k_og < k_op:
             x = k_op/k_og
-            self.Stronger_RBS(input_signal, x)
+            self.Weaker_RBS(input_signal, x)
 
         
-        while ymax_og < ymax_op*1.5 or ymin_og > ymax_op/1.5:
-            self.stretch(input_signal, x)
+        while ymax_og*1.5 < ymax_op or ymin_og/1.5 > ymax_op:
+            self.stretch(input_signal, 1.5)
             ymax_og = ymax_og*1.5
             ymin_og = ymin_og/1.5
-        '''
-        
-        for param in data[index]['parameters']:
-            #search for k and change value
-            if param["name"] == 'ymax':
-                param["value"] = ymax_op
-            if param["name"] == 'ymin':
-                param["value"] = ymin_op
-            if param["name"] == 'alpha':
-                param["value"] = n_op
-            if param["name"] == 'beta':
-                param["value"] = k_op
-        
-        self.write_json(data)
-        '''
